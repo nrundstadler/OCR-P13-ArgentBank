@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { useLoginMutation } from "../../store/auth/api";
 import styles from "./SignIn.module.scss";
 
@@ -12,6 +13,8 @@ function SignIn() {
   const [login, { isLoading }] = useLoginMutation();
 
   const navigate = useNavigate();
+
+  const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -30,7 +33,7 @@ function SignIn() {
 
     try {
       await login({ email, password, rememberMe }).unwrap();
-      navigate("/", { replace: true });
+      navigate("/user", { replace: true });
     } catch (error) {
       console.error("Erreur de connexion:", error);
       switch (error.status) {
@@ -45,6 +48,10 @@ function SignIn() {
       }
     }
   };
+
+  if (isAuthenticated) {
+    return <Navigate to="/user" />;
+  }
 
   return (
     <main className="bg-dark">
@@ -73,7 +80,9 @@ function SignIn() {
           <button type="submit" className={styles.signInButton} disabled={isLoading}>
             {isLoading ? "Signing in..." : "Sign In"}
           </button>
-          {errorMessage && <div className={styles.errorMessage}>{errorMessage}</div>}
+          <div className={styles.errorMessage} role="alert" aria-live="assertive">
+            {errorMessage}
+          </div>
         </form>
       </section>
     </main>
