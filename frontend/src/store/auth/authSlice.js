@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { api } from "./api";
 
-const storedToken = localStorage.getItem("authToken");
+const storedToken = localStorage.getItem("authToken") || sessionStorage.getItem("authToken");
 
 const initialState = {
   token: storedToken || null,
@@ -16,6 +16,7 @@ export const authSlice = createSlice({
       state.token = null;
       state.isAuthenticated = false;
       localStorage.removeItem("authToken");
+      sessionStorage.removeItem("authToken");
     },
   },
   extraReducers: builder => {
@@ -31,6 +32,8 @@ export const authSlice = createSlice({
       const { rememberMe } = meta.arg.originalArgs;
       if (rememberMe) {
         localStorage.setItem("authToken", payload.body.token);
+      } else {
+        sessionStorage.setItem("authToken", payload.body.token);
       }
     });
   },
