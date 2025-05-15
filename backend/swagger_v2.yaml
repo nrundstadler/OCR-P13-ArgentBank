@@ -1,0 +1,500 @@
+openapi: "3.0.0"
+info:
+  title: Bank Argent API documentation
+  description: Contains all available API endpoints in this codebase
+  version: "1.0.0"
+  termsOfService: "http://swagger.io/terms/"
+
+servers:
+  - url: http://localhost:3001/api/v2
+    description: Development server
+paths:
+  # ====== USER MODULE ======
+  /user/login:
+    post:
+      tags:
+        - User Module
+      summary: Login
+      description: API for Login
+      requestBody:
+        description: Login Payload
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Login"
+      responses:
+        "200":
+          description: Login Successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoginResponse"
+        "400":
+          description: Invalid Fields
+        "500":
+          description: Internal Server Error
+
+  /user/signup:
+    post:
+      tags:
+        - User Module
+      summary: Signup
+      description: API for Signup
+      requestBody:
+        description: Signup Payload
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        "200":
+          description: Signup Successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+        "400":
+          description: Invalid Fields
+        "500":
+          description: Internal Server Error
+
+  /user/profile:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - User Module
+      summary: User Profile API
+      description: API for fetching a user profile
+      responses:
+        "200":
+          description: User profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+        "400":
+          description: Invalid Fields
+        "500":
+          description: Internal Server Error
+
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - User Module
+      summary: User Profile API
+      description: API for updating a user profile
+      requestBody:
+        description: Update user profile attributes
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserProfile"
+      responses:
+        "200":
+          description: User profile retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+        "400":
+          description: Invalid Fields
+        "500":
+          description: Internal Server Error
+
+  # ====== ACCOUNTS MODULE ======
+  /accounts:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Accounts Module
+      summary: Get user's accounts
+      description: API for fetching all accounts belonging to the authenticated user
+      responses:
+        "200":
+          description: Accounts retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccountsResponse"
+        "401":
+          description: Unauthorized
+        "404":
+          description: No accounts found
+        "500":
+          description: Internal Server Error
+
+  /accounts/{accountId}:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Accounts Module
+      summary: Get single account
+      description: API for retrieving a specific account belonging to the authenticated user
+      parameters:
+        - name: accountId
+          description: ID of the account to retrieve
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Account retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccountResponse"
+        "401":
+          description: Unauthorized
+        "404":
+          description: Account not found
+        "500":
+          description: Internal Server Error
+
+  # ====== TRANSACTIONS MODULE ======
+  /accounts/{accountId}/transactions:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Transactions Module
+      summary: Get all transactions
+      description: |
+        API for fetching all transactions of a specific account.
+
+        # Examples
+
+        1. Get current month's transactions:
+           ```
+           GET /api/v2/accounts/60a7d2b8e5c8f41d3e9b4c7d/transactions
+           ```
+           
+        2. Get current year transactions :
+           ```
+           GET /api/v2/accounts/60a7d2b8e5c8f41d3e9b4c7d/transactions?period=year
+           ```
+           
+        3. Get transactions from previous year:
+           ```
+           GET /api/v2/accounts/60a7d2b8e5c8f41d3e9b4c7d/transactions?period=previous-year
+           ```
+           
+        4. Get transactions for a custom date range:
+           ```
+           GET /api/v2/accounts/60a7d2b8e5c8f41d3e9b4c7d/transactions?period=custom&startDate=2023-01-01&endDate=2023-03-15
+           ```
+      parameters:
+        - name: accountId
+          description: ID of the account to retrieve transactions for
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: period
+          description: Predefined time period for filtering transactions
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [month, year, previous-year, custom]
+            default: month
+        - name: startDate
+          description: Start date for custom period (format YYYY-MM-DD). Required if period=custom.
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+        - name: endDate
+          description: End date for custom period (format YYYY-MM-DD). Required if period=custom.
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+
+      responses:
+        "200":
+          description: Transactions retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionsResponse"
+        "400":
+          description: Invalid request parameters
+        "401":
+          description: Unauthorized
+        "404":
+          description: No transactions found for this account
+        "500":
+          description: Internal Server Error
+
+  /accounts/{accountId}/transactions/{transactionId}:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Transactions Module
+      summary: Get single transaction
+      description: API for retrieving a specific transaction by ID
+      parameters:
+        - name: accountId
+          description: ID of the account
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          description: ID of the transaction to retrieve
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Transaction retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionResponse"
+        "401":
+          description: Unauthorized
+        "404":
+          description: Transaction not found
+        "500":
+          description: Internal Server Error
+
+    patch:
+      security:
+        - Bearer: []
+      tags:
+        - Transactions Module
+      summary: Update transaction information
+      description: API for updating category and notes of a specific transaction
+      parameters:
+        - name: accountId
+          description: ID of the account
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: transactionId
+          description: ID of the transaction to update
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Transaction information to update
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TransactionInfo"
+      responses:
+        "200":
+          description: Transaction updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionResponse"
+        "400":
+          description: Invalid Fields
+        "401":
+          description: Unauthorized
+        "404":
+          description: Transaction not found
+        "500":
+          description: Internal Server Error
+
+# ===== COMPONENTS =====
+components:
+  # ====== SECURITY SCHEMES ======
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  # ========== SCHEMAS ===========
+  schemas:
+    # USER SCHEMAS
+    User:
+      type: object
+      properties:
+        email:
+          type: string
+          description: user email
+        password:
+          type: string
+          description: user password
+        firstName:
+          type: string
+          description: user first name
+        lastName:
+          type: string
+          description: user last name
+
+    Login:
+      type: object
+      properties:
+        email:
+          type: string
+          description: user email
+        password:
+          type: string
+          description: user password
+
+    UserResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+        message:
+          type: string
+        body:
+          type: object
+          properties:
+            id:
+              type: string
+            firstName:
+              type: string
+            lastName:
+              type: string
+            email:
+              type: string
+
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+
+    UserProfile:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+
+    # ACCOUNT SCHEMAS
+    Account:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "60a7d2b8e5c8f41d3e9b4c7d"
+        accountNumber:
+          type: string
+          example: "x8349"
+        accountType:
+          type: string
+          enum: [checking, savings, credit]
+          example: "checking"
+        balance:
+          type: number
+          format: float
+          example: 2082.79
+        balanceType:
+          type: string
+          enum: [available, current]
+          example: available
+
+    AccountResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          example: 200
+        message:
+          type: string
+          example: "Account retrieved successfully"
+        body:
+          $ref: "#/components/schemas/Account"
+
+    AccountsResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          example: 200
+        message:
+          type: string
+          example: "Accounts retrieved successfully"
+        body:
+          type: array
+          items:
+            $ref: "#/components/schemas/Account"
+
+    # ====== TRANSACTION SCHEMAS ======
+    TransactionInfo:
+      type: object
+      properties:
+        category:
+          type: string
+          enum: [Food, Transport, Entertainment, Shopping, Other]
+          example: Food
+        notes:
+          type: string
+          example: "Restaurant with Melanie"
+
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: string
+          example: "60a7d2b8e5c8f41d3e9b4c7d"
+        accountId:
+          type: string
+          example: "95b7d2b8e5c8f41d3e9b4c7e"
+        date:
+          type: string
+          format: date-time
+          example: "2023-10-01T12:00:00Z"
+        amount:
+          type: number
+          format: double
+          example: 5
+        description:
+          type: string
+          example: "Golden Sun Bakery"
+        balance:
+          type: number
+          format: double
+          example: 2077.79
+        info:
+          $ref: "#/components/schemas/TransactionInfo"
+
+    TransactionResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          example: 200
+        message:
+          type: string
+          example: "Transaction retrieved successfully"
+        body:
+          $ref: "#/components/schemas/Transaction"
+
+    TransactionsResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          example: 200
+        message:
+          type: string
+          example: "Transactions retrieved successfully"
+        body:
+          type: array
+          items:
+            $ref: "#/components/schemas/Transaction"
