@@ -1,10 +1,14 @@
 import { useState } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { useLoginMutation } from "../../store/auth/api";
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
+import { useLoginMutation } from "../../store/api/apiSlice";
+import { selectIsAuthenticated } from "../../store/auth/authSlice";
 import styles from "./SignIn.module.scss";
 
 function SignIn() {
+  useDocumentTitle("Sign In");
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
@@ -14,7 +18,7 @@ function SignIn() {
 
   const navigate = useNavigate();
 
-  const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+  const isAuthenticated = useSelector(selectIsAuthenticated);
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -33,24 +37,28 @@ function SignIn() {
 
     try {
       await login({ email, password, rememberMe }).unwrap();
-      navigate("/user", { replace: true });
+      navigate("/profile", { replace: true });
     } catch (error) {
-      console.error("Erreur de connexion:", error);
+      console.error("Connection error:", error);
+
       switch (error.status) {
+        case "FETCH_ERROR":
+          setErrorMessage("The server is unavailable. Please check your connection or try again later.");
+          break;
         case 400:
-          setErrorMessage("Incorrect email or password");
+          setErrorMessage("The email and password combination is incorrect.");
           break;
         case 500:
-          setErrorMessage("The server encountered a problem, please try again later");
+          setErrorMessage("The server encountered a problem, please try again later.");
           break;
         default:
-          setErrorMessage("An error occurred");
+          setErrorMessage("An error occurred.");
       }
     }
   };
 
   if (isAuthenticated) {
-    return <Navigate to="/user" />;
+    return <Navigate to="/profile" />;
   }
 
   return (
@@ -61,13 +69,21 @@ function SignIn() {
         <form onSubmit={handleSubmit}>
           <div className={styles.inputWrapper}>
             <label htmlFor="username">Username</label>
-            <input type="text" id="username" value={email} onChange={e => setEmail(e.target.value.trim())} required />
+            <input
+              type="text"
+              id="username"
+              autoComplete="username"
+              value={email}
+              onChange={e => setEmail(e.target.value.trim())}
+              required
+            />
           </div>
           <div className={styles.inputWrapper}>
             <label htmlFor="password">Password</label>
             <input
               type="password"
               id="password"
+              autoComplete="current-password"
               value={password}
               onChange={e => setPassword(e.target.value.trim())}
               required

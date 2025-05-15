@@ -1,3 +1,4 @@
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 import Features from "../../components/Features/Features";
 import FeatureItem from "../../components/Features/FeatureItem/FeatureItem";
 import styles from "./Homepage.module.scss";
@@ -6,6 +7,9 @@ import iconMoney from "../../assets/images/icon-money.png";
 import iconSecurity from "../../assets/images/icon-security.png";
 
 function Homepage() {
+  // Set page title
+  useDocumentTitle("Home Page");
+
   return (
     <main>
       <div className={styles.hero}>

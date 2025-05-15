@@ -1,31 +1,42 @@
-.mainNav {
+@use "../../assets/styles/variables" as v;
+@use "../../assets/styles/mixins" as m;
+
+.main-nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 5px 20px;
+  padding: v.$spacing-xs 0;
+
+  @include m.respond-to(v.$breakpoint-mobile) {
+    padding: v.$spacing-xs v.$spacing-lg;
+  }
 }
 
-.mainNavLogo {
+.main-nav-logo {
   display: flex;
   align-items: center;
 
   img {
     max-width: 100%;
-    width: 200px;
+    width: 150px; // Taille réduite pour mobile
+
+    @include m.respond-to(v.$breakpoint-tablet) {
+      width: 200px; // Taille normale pour tablette/desktop
+    }
   }
 }
 
-.mainNavItem {
+.main-nav-item {
   text-decoration: none;
-  margin-right: 0.5rem;
+  margin-right: v.$spacing-md;
   font-weight: bold;
-  color: #2c3e50;
+  color: v.$color-secondary;
 
   &:hover {
     text-decoration: underline;
   }
 
   i {
-    margin-right: 4.5px;
+    margin-right: v.$spacing-xs;
   }
 }

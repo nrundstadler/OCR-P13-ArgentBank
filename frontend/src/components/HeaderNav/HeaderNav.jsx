@@ -1,20 +1,15 @@
 import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { useGetUserProfileQuery } from "../../store/auth/api";
-import { logout } from "../../store/auth/authSlice";
-
+import { useDispatch, useSelector } from "react-redux";
+import { selectIsAuthenticated, logout } from "../../store/auth/authSlice";
+import { selectProfile } from "../../store/profile/profileSlice";
 import styles from "./HeaderNav.module.scss";
 import logo from "../../assets/images/argentBankLogo.png";
 
 function HeaderNav() {
-  const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
   const dispatch = useDispatch();
 
-  const { data, isLoading, isError } = useGetUserProfileQuery(undefined, {
-    skip: !isAuthenticated,
-  });
-
-  const firstName = data?.body?.firstName || "User";
+  const isAuthenticated = useSelector(selectIsAuthenticated);
+  const { firstName } = useSelector(selectProfile);
 
   const handleSignOut = e => {
     e.preventDefault();
@@ -24,13 +19,13 @@ function HeaderNav() {
   return (
     <header>
       <nav className={styles.mainNav}>
-        <Link className={styles.mainNavLogo} to="/">
-          <img src={logo} alt="Argent Bank Logo" aria-hidden="true" />
+        <Link className={styles.mainNavLogo} to="/" aria-label="Argent Bank Home">
+          <img src={logo} alt="" aria-hidden="true" />
           <h1 className="sr-only">Argent Bank</h1>
         </Link>
-        {isAuthenticated && !isLoading && !isError ? (
+        {isAuthenticated ? (
           <div>
-            <Link className={styles.mainNavItem} to="/user">
+            <Link className={styles.mainNavItem} to="/profile">
               <i className="fa fa-user-circle"></i>
               {firstName}
             </Link>

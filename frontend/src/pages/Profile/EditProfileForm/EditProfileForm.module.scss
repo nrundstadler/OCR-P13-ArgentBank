@@ -1,0 +1,45 @@
+@use "../../../assets/styles/variables" as v;
+@use "../../../assets/styles/mixins" as m;
+
+h1 {
+  margin-bottom: v.$spacing-sm;
+}
+
+.form-edit {
+  display: flex;
+  flex-direction: column;
+  gap: v.$spacing-md;
+}
+
+.form-edit-inputs {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: v.$spacing-md;
+  flex-direction: column;
+
+  @include m.respond-to(v.$breakpoint-mobile) {
+    flex-direction: row;
+  }
+
+  input {
+    width: 180px;
+    height: 10px;
+    padding: 10px;
+    @include m.input-style;
+  }
+}
+
+.form-edit-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: v.$spacing-md;
+
+  button {
+    @include m.button-primary;
+    min-width: 100px;
+    padding: v.$spacing-sm;
+    font-size: v.$font-size-small;
+  }
+}

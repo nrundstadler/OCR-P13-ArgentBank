@@ -1,8 +1,11 @@
+@use "../../assets/styles/variables" as v;
+@use "../../assets/styles/mixins" as m;
+
 .features {
   display: flex;
   flex-direction: column;
 
-  @media (min-width: 920px) {
+  @include m.respond-to(v.$breakpoint-desktop) {
     flex-direction: row;
   }
 }

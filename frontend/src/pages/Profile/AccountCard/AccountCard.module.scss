@@ -1,0 +1,62 @@
+@use "../../../assets/styles/variables" as v;
+@use "../../../assets/styles/mixins" as m;
+
+.account {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid v.$color-black;
+  background-color: v.$color-white;
+  width: 80%;
+  margin: 0 auto;
+  flex-direction: column;
+  padding: v.$spacing-lg;
+  box-sizing: border-box;
+  text-align: left;
+  margin-bottom: v.$spacing-xl;
+}
+
+.account-amount {
+  margin: 0;
+  font-size: v.$font-size-xxl;
+  font-weight: bold;
+}
+
+.account-amount-description {
+  margin: 0;
+}
+
+.account-title {
+  margin: 0;
+  padding: 0;
+  font-size: v.$font-size-base;
+  font-weight: normal;
+}
+
+.account-content-wrapper {
+  width: 100%;
+  flex: 1;
+}
+
+.transaction-button {
+  @include m.button-primary;
+  display: block;
+  width: 100%;
+  padding: v.$spacing-sm;
+  font-size: v.$font-size-medium;
+  margin-top: v.$spacing-md;
+}
+
+@include m.respond-to(v.$breakpoint-tablet) {
+  .account {
+    flex-direction: row;
+  }
+
+  .account-content-wrapper.cta {
+    flex: 0;
+  }
+
+  .transaction-button {
+    width: 200px;
+  }
+}

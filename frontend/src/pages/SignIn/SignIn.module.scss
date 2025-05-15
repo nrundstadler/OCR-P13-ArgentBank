@@ -1,72 +1,50 @@
+@use "../../assets/styles/variables" as v;
+@use "../../assets/styles/mixins" as m;
+
 .signIn {
   box-sizing: border-box;
-  background-color: white;
+  background-color: v.$color-white;
   width: 300px;
   margin: 0 auto;
-  margin-top: 3rem;
-  padding: 2rem;
+  margin-top: v.$spacing-xxxl;
+  padding: v.$spacing-xl;
 }
 
-.signInIcon {
+.signIn-icon {
   font-size: 5rem;
 }
 
-.signInButton {
-  cursor: pointer;
+.signIn-button {
+  @include m.button-primary;
   display: block;
   width: 100%;
-  padding: 0.4rem;
-  font-size: 1.1rem;
-  font-weight: bold;
-  margin-top: 1rem;
+  padding: v.$spacing-sm;
+  font-size: v.$font-size-medium;
+  margin-top: v.$spacing-md;
   border: none;
-  background-color: #00bc77;
-  color: #fff;
-  transition: background-color 0.3s;
-
-  &:hover {
-    background-color: #005733;
-  }
-
-  &:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 2px lighten(#00bc77, 5%);
-  }
 }
 
-.inputRemember {
+.input-remember {
   display: flex;
 
   label {
-    margin-left: 0.25rem;
+    margin-left: v.$spacing-xs;
   }
 }
 
-.inputWrapper {
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-  margin-bottom: 1rem;
-
-  label {
-    font-weight: bold;
-  }
+.input-wrapper {
+  @include m.form-field;
 
   input {
     padding: 5px;
-    font-size: 1.2rem;
-
-    &:focus {
-      border-color: #00bc77;
-      outline: none;
-      box-shadow: 0 0 0 1px rgba(0, 188, 119, 0.3);
-    }
+    font-size: v.$font-size-large;
+    @include m.input-style;
   }
 }
 
-.errorMessage {
-  color: red;
-  font-size: 0.9rem;
-  margin-top: 0.5rem;
+.error-message {
+  color: v.$color-error;
+  font-size: v.$font-size-small;
+  margin-top: v.$spacing-sm;
   text-align: center;
 }
