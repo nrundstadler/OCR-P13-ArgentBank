@@ -434,7 +434,7 @@ components:
           items:
             $ref: "#/components/schemas/Account"
 
-    # TRANSACTION SCHEMAS
+    # ====== TRANSACTION SCHEMAS ======
     TransactionInfo:
       type: object
       properties:

@@ -67,3 +67,75 @@ L'application sera accessible à l'adresse http://localhost:5173/ (ou autre port
 ## Phase 2 : API Transactions
 
 La deuxième phase du projet consistait à concevoir les spécifications d'API pour la gestion des transactions. Vous pouvez retrouver mes spécifications dans le fichier [`swagger_v2.yaml`](./backend/swagger_v2.yaml).
+
+# English
+
+## Projet 13 : Argent Bank - Application bancaire
+
+This project is part of the OpenClassrooms "JavaScript React Application Developer" training program and aims to:
+
+- Develop a front-end banking application with React
+- Implement user authentication using a REST API
+- Design a global state management system with Redux
+- Create a responsive and dynamic user interface
+- Design API specifications for future features (transactions)
+
+### Installation
+
+#### Prerequisites
+
+- [Node.js](https://nodejs.org/en/)
+- [Argent Bank Backend API](./backend)
+
+1. **Clone the project**
+
+```bash
+git clone https://github.com/nrundstadler/OCR-P13-ArgentBank
+cd OCR-P13-ArgentBank/frontend
+```
+
+2. **Install dependencies**
+
+```bash
+npm install
+```
+
+3. **Launch the application**
+
+```bash
+npm run dev
+```
+
+The application will be accessible at http://localhost:5173/ (or another port indicated by Vite).
+
+### Technologies used
+
+- **React 19** : JavaScript library for creating the user interface
+- **Redux Toolkit** : Global state management for the application
+- **RTK Query** : API request management and caching
+- **React Router** : Navigation between different pages
+- **SCSS Modules** : Modular and scoped styles
+- **Vite** : Fast build tool for development
+
+### Available scripts
+
+- `npm run dev` : Starts the development server
+- `npm run build` : Compiles the application for production
+- `npm run lint` : Checks code with ESLint
+- `npm run preview` : Previews the production version
+
+### Test user accounts
+
+#### Tony Stark
+
+- Email: tony@stark.com
+- Password: password123
+
+#### Steve Rogers
+
+- Email: steve@rogers.com
+- Password: password456
+
+### Phase 2: Transactions API
+
+The second phase of the project involved designing API specifications for transaction management. You can find my specifications in the [`swagger_v2.yaml`](./backend/swagger_v2.yaml).
