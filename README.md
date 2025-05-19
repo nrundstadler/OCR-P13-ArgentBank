@@ -70,7 +70,7 @@ La deuxième phase du projet consistait à concevoir les spécifications d'API p
 
 # English
 
-## Projet 13 : Argent Bank - Application bancaire
+# Project 13: Argent Bank - Banking Application
 
 This project is part of the OpenClassrooms "JavaScript React Application Developer" training program and aims to:
 
