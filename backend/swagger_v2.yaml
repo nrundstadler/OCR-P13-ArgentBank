@@ -356,7 +356,7 @@ components:
       type: object
       properties:
         status:
-          type: string
+          type: integer
         message:
           type: string
         body:
@@ -412,8 +412,8 @@ components:
       type: object
       properties:
         status:
-          type: string
-          example: "success"
+          type: integer
+          example: 200
         message:
           type: string
           example: "Account retrieved successfully"
@@ -424,8 +424,8 @@ components:
       type: object
       properties:
         status:
-          type: string
-          example: "success"
+          type: integer
+          example: 200
         message:
           type: string
           example: "Accounts retrieved successfully"
@@ -477,8 +477,8 @@ components:
       type: object
       properties:
         status:
-          type: string
-          example: "success"
+          type: integer
+          example: 200
         message:
           type: string
           example: "Transaction retrieved successfully"
@@ -489,8 +489,8 @@ components:
       type: object
       properties:
         status:
-          type: string
-          example: "success"
+          type: integer
+          example: 200
         message:
           type: string
           example: "Transactions retrieved successfully"
